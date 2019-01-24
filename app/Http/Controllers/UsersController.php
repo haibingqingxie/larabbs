@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 
+use App\Http\Requests\UserRequest;
+
 class UsersController extends Controller
 {
     public function show(User $user)
@@ -17,20 +19,22 @@ class UsersController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        $this->validate($request, [
-            'name' => 'required|max:255',
-            'password' => 'nullable|confirmed|min:6'
-        ]);
+        // $this->validate($request, [
+        //     'name' => 'required|max:255',
+        //     'password' => 'nullable|confirmed|min:6'
+        // ]);
 
-        $user->name = $request->name;
-        if ($request->password) {
-            $user->password = bcypt($request->password);
-        }
+        // $user->name = $request->name;
+        // if ($request->password) {
+        //     $user->password = bcypt($request->password);
+        // }
 
-        $user->save();
+        // $user->save();
 
-        return redirect()->route('users.show', [$user->id]);
+        $user->update($request->all());
+
+        return redirect()->route('users.show', [$user->id])->with('success', '个人资料更新成功！');
     }
 }
