@@ -32,6 +32,11 @@ class UserRequest extends FormRequest
         ];
     }
 
+     /**
+     * Get the validation error messages that apply to the request.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [
