@@ -10,6 +10,11 @@ use App\Handlers\ImageUploadHandler;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['show']]);
+    }
+
     public function show(User $user)
     {
         return view('users.show', compact('user'));
@@ -17,25 +22,16 @@ class UsersController extends Controller
 
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
+
         return view('users.edit', compact('user'));
     }
 
     public function update(UserRequest $request, ImageUploadHandler $imageUploadHandler, User $user)
     {
-        // $this->validate($request, [
-        //     'name' => 'required|max:255',
-        //     'password' => 'nullable|confirmed|min:6'
-        // ]);
+        $this->authorize('update', $user);
 
-        // $user->name = $request->name;
-        // if ($request->password) {
-        //     $user->password = bcypt($request->password);
-        // }
-
-        // $user->save();
-        // dd($request->avatar);
-         $data = $request->all();
-         // dd($data);
+        $data = $request->all();
 
         if ($request->avatar) {
             $result = $imageUploadHandler->save($request->avatar, 'avatars', $user->id, 416);
