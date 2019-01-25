@@ -38,7 +38,7 @@ class UsersController extends Controller
          // dd($data);
 
         if ($request->avatar) {
-            $result = $imageUploadHandler->save($request->avatar, 'avatars', $user->id);
+            $result = $imageUploadHandler->save($request->avatar, 'avatars', $user->id, 416);
             if ($result) {
                 $data['avatar'] = $result['path'];
             }
